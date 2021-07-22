@@ -205,7 +205,7 @@ nav .menu {
   transition: 0.2s;
 }
 
-/*=======mostrar menu======*/
+/*=======mostrar menu=======*/
 nav.show .menu {
   opacity: 1;
 
