@@ -8,30 +8,30 @@ for (const element of toggle) {
     nav.classList.toggle('show')
   })
 }
-//quando clicar em um item do menu, esconder o menu//
 
+//quando clicar em um item do menu, esconder o menu//
 const links = document.querySelectorAll('nav ul li a')
+
 for (const link of links) {
   link.addEventListener('click', function () {
     nav.classList.remove('show')
   })
 }
 
+
 //mudar o header da pagina quando der scroll//
 const header = document.querySelector("#header")
 const navHeight = header.offsetHeight
 
-window.addEventListener("scroll", function () {
-  if (window.scrollY >= navHeight) //scroll maior que a altura do header 
-  {
+function changeHeaderWhenScroll() {
+  if (window.scrollY >= navHeight) {
+    // scroll é maior que a altura do header
     header.classList.add('scroll')
-
   } else {
-    //menor que a altura do header
+    // menor que a altura do header
     header.classList.remove('scroll')
   }
-
-})
+}
 
 //---------- TESTIMONIALS SWIPER ------------//
 const swiper = new Swiper('.swiper-container', {
@@ -40,7 +40,13 @@ const swiper = new Swiper('.swiper-container', {
     el: '.swiper-pagination'
   },
   mousewhell: true,
-  keyboard: true
+  keyboard: true,
+  breakpoints: {
+    767: {
+      slidesPerView: 2,
+      setWrapperSize: true
+    }
+  }
 
 });
 
@@ -64,12 +70,58 @@ scrollReveal.reveal(
     interval: 100
   })
 
-  //---------- Botão voltar para o topo ------------//
-  const backToTopButton = document.querySelector(".back-to-top") 
-  window.addEventListener("scroll", function () {
-    if(window.scrollY>=560) {
-      backToTopButton.classList.add("show")
+
+
+// menu ativo conforme a seção  visivel na pagina // 
+const sections = document.querySelectorAll('main section[id]')
+
+function activateMenuAtCurrentSection() {
+
+  const checkpoint = window.pageYOffset + (window.innerHeight / 8) * 4
+
+  for (const section of sections) {
+    const sectionTop = section.offsetTop
+    const sectionHeight = section.offsetHeight
+    const sectionId = section.getAttribute('id')
+
+    const checkpointStart = checkpoint >= sectionTop
+    const checkpointEnd = checkpoint <= sectionTop + sectionHeight
+
+    if (checkpointStart && checkpointEnd) {
+      document
+        .querySelector('nav ul li a[href*=' + sectionId + ']')
+        .classList.add('active')
+
     } else {
-      backToTopButton.classList.remove('show')
+      document
+        .querySelector('nav ul li a[href*=' + sectionId + ']')
+        .classList.remove('active')
     }
-  })
+  }
+}
+
+
+//---------- Botão voltar para o topo ------------//
+const backToTopButton = document.querySelector(".back-to-top")
+
+function backToTop() {
+  if (window.scrollY >= 560) {
+    backToTopButton.classList.add("show")
+  } else {
+    backToTopButton.classList.remove('show')
+  }
+}
+
+// cria uma função que chama todas as funçoes quando o evento "scroll" ocorrer//
+
+
+
+window.addEventListener('scroll', function () {
+  changeHeaderWhenScroll()
+  backToTop()
+  activateMenuAtCurrentSection()
+})
+
+window.onload = function () {
+  activateMenuAtCurrentSection()
+}

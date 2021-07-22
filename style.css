@@ -32,10 +32,12 @@ img {
   --title-color: hsl(var(--hue) 41% 10%);
   --text-color: hsl(0 0% 46%);
   --text-color-light: hsl(0 0% 98%);
-  --body-color: hsl(0 0% 98%)
-
+  --body-color: hsl(0 0% 98%);
+  /* fonts */
   --subtitle-font-size: 1rem;
   --title-font-size: 1.875rem;
+  --title-font: 'Poppins', sans-serif;
+  --body-font: "DM Sans", sans-serif;
 }
 
 /*=========== Base ===========*/
@@ -45,16 +47,16 @@ html {
 }
 
 body {
-  font: 400 1rem "DM Sans", sans-serif;
+  font: 400 1rem var(--body-font);
   color: var(--text-color);
   background: var(--body-color);
-  -webkit-font-smothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
 .title {
-  font: 700 1.875rem "Poppins", sans-serif;
+  font: 700 1.875rem var(--title-font);
   color: var(--title-color);
-  -webkit-font-smothing: auto;
+  -webkit-font-smoothing: auto;
 }
 
 .button {
@@ -99,7 +101,7 @@ body {
 }
 
 .section {
-  padding: 5rem 0;
+  padding: calc(5rem + var(--header-height)) 0;
 }
 
 .section .title {
@@ -109,6 +111,7 @@ body {
 .section header {
   margin-bottom: 4rem;
 }
+
 .section .subtitle {
   font-size: var(--subtitle-font-size);
 }
@@ -135,14 +138,11 @@ body {
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 }
 
-main {
-  margin-top: calc(var(--header-height) + 2rem);
-}
 
 
 /*=========== Logo ===========*/
 .logo {
-  font: 700 1.31rem "Poppins", sans-serif;
+  font: 700 1.31rem var(--title-font);
   color: var(--title-color);
 
 }
@@ -151,7 +151,7 @@ main {
   color: var(--base-color);
 }
 
-.logo-alt span{
+.logo-alt span {
   color: var(--body-color);
 }
 
@@ -174,7 +174,12 @@ nav ul li a {
   position: relative;
 }
 
-nav ul li a:after {
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--base-color);
+}
+
+nav ul li a::after {
   content: "";
   width: 0%;
   height: 2px;
@@ -185,26 +190,26 @@ nav ul li a:after {
   transition: width 0.2s;
 }
 
-nav ul li a:hover::after {
+nav ul li a:hover::after,
+nav ul li a.active::after {
   width: 100%;
 }
 
-nav ul li a:hover {
-  color: var(--base-color);
-}
+
 
 nav .menu {
   opacity: 0;
-  visibility: hidden;
-  top: -20rem;
+
+  display: none;
+  top: -10000px;
   transition: 0.2s;
 }
 
 /*=======mostrar menu======*/
 nav.show .menu {
   opacity: 1;
-  visibility: visible;
 
+  display: inherit;
   background: var(--body-color);
 
   height: 100vh;
@@ -373,7 +378,7 @@ nav.show div.icon-close {
   background: white;
 }
 
-#testimonials .container{
+#testimonials .container {
   margin-left: 0;
   margin-right: 0;
 }
@@ -431,52 +436,63 @@ nav.show div.icon-close {
 .swiper-pagination-bullet-active {
   background: var(--base-color);
 }
+
 /*=========== Contact =========== */
 #contact .grid {
   gap: 4rem;
 }
+
 #contact .text p {
   margin-bottom: 2rem;
 }
-#contact .button i , #contact ul li i {
+
+#contact .button i,
+#contact ul li i {
   font-size: 1.5rem;
   margin-right: 0.625rem;
 }
 
-#contact  ul.grid {
-  gap: 2rem; /* espaços entre elementos, destravado com a funcionalidade "grid" */
+#contact ul.grid {
+  gap: 2rem;
+  /* espaços entre elementos, destravado com a funcionalidade "grid" */
 }
-#contact ul li{
+
+#contact ul li {
   display: flex;
   align-items: center;
 }
 
- #contact ul li i {
-   color: var(--base-color);
- }
+#contact ul li i {
+  color: var(--base-color);
+}
 
- /*=========== Footer =========== */
+/*=========== Footer =========== */
 
- footer {
+footer {
   background: var(--base-color);
- }
- 
- footer .logo {
+}
+
+footer.section {
+  padding: 4rem 0;
+}
+
+footer .logo {
   display: inline-block;
   margin-bottom: 1.5rem;
   font-size: 1.31rem;
- }
+}
 
- footer .brand p {
+footer .brand p {
   color: var(--text-color-light);
   margin-bottom: 0.75rem;
 }
- footer i {
-   font-size: 1.5rem;
-   color: var(--text-color-light);
- }
 
- footer .social a {
+footer i {
+  font-size: 1.5rem;
+  color: var(--text-color-light);
+}
+
+footer .social a {
   margin-right: 2rem;
   transition: 0.3s;
   display: inline-block;
@@ -491,7 +507,7 @@ footer .social a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   background: var(--base-color);
   color: var(--text-color-light);
 
@@ -510,7 +526,7 @@ footer .social a:hover {
 
   transition: 0.3s;
   transform: translateY(100%);
-} 
+}
 
 .back-to-top.show {
   visibility: visible;
@@ -521,13 +537,133 @@ footer .social a:hover {
 .icon-arrow-up-circle {
   margin-bottom: 0.1rem;
 }
-/* responsivo */
+
+/*=========== Media Queries =========== */
+
+/*  tamanho de resolução extra larga (1200 >) */
+@media (min-width: 1200px) {
+
+  .button {
+    height: 3.125rem;
+  }
+
+
+  .container {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section {
+    padding: 10rem 0;
+  }
+
+  .section header,
+  #testimonials header {
+    max-width: 32rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  nav .menu {
+    opacity: 1;
+    visibility: visible;
+    top: 0;
+  }
+
+  nav .menu ul {
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav .menu ul li a.title {
+    font: 400 1rem var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav .menu ul li a.title.active {
+    font-weight: bold;
+    -webkit-font-smoothing: auto;
+  }
+
+  /* tira o icone de menu do mobile */
+  nav .icon-menu {
+    display: none;
+  }
+
+  main {
+    margin-top: calc(--header-height);
+  }
+
+  /*== Home == */
+  #home .container {
+    grid-auto-flow: column;
+    width: fit-content;
+    justify-content: space-between;
+    margin: 0 auto;
+  }
+
+  #home .image {
+    order: 1;
+  }
+
+  #home .text {
+    order: 0;
+    max-width: 24rem;
+    text-align: left;
+  }
+
+  /* about */
+  #about .container {
+    margin: 0 auto;
+    grid-auto-flow: column;
+  }
+
+  /* services */
+  .cards {
+    /* tamanho das colunas em fração */
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .card {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+
+  /* testimonials */
+  #testimonials .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* contact */
+
+  #contact .container {
+    grid-auto-flow: column;
+    align-items: center;
+  }
+
+  #contact .text {
+    max-width: 25rem;
+  }
+
+  /* footer */
+  footer.section {
+    padding: 3.75rem 0;
+  }
+
+  footer .logo {
+    font-size: 2.25rem;
+  }
+}
+
 @media (min-width: 992px) {
- :root {
-   --title-font-size: 2.25rem;
-   --subtitle-font-size: 1.125rem;
- }
+  :root {
+    --title-font-size: 2.25rem;
+    --subtitle-font-size: 1.125rem;
+  }
 }
-@media (min-width: 767px) {
-  
-}
+
+@media (min-width: 767px) {}
